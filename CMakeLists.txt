@@ -18,19 +18,6 @@ link_directories(${SDL2_LIBRARY_DIRS} ${SDL2_TTF_LIBRARY_DIRS} ${SDL2_IMAGE_LIBR
 file(GLOB_RECURSE SRC_FILES src/**.cpp)
 add_executable(${GAME_NAME} ${SRC_FILES} ext/SDL_FontCache.cpp)
 
-target_precompile_headers(${GAME_NAME}
-  PUBLIC
-    src/common.h
-  PRIVATE
-    <cstdio>
-    <ctime>
-    <array>
-    <string>
-    <functional>
-    <unordered_map>
-    <SDL.h>
-    <SDL_image.h>
-    <SDL_ttf.h>
-    <SDL_FontCache.h>
+target_precompile_headers(${GAME_NAME} PUBLIC src/common.h
 )
 target_link_libraries(${GAME_NAME} ${SDL2_LIBRARIES} ${SDL2_TTF_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})
