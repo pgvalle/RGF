@@ -22,12 +22,12 @@ void Game::quit() {
 }
 
 void Game::loop() {
-  Uint32 tpf = 1000 / 60; // time per frame
+  Uint32 tpf = 1000 / FRAMERATE, delta = 1; // time per frame and time of frame
   int sid = 0, new_sid = 0; // screen index and new screen index
 
   while (new_sid != NULL_SCREEN) {
     std::vector<SDL_Event> events;
-    Uint32 start = SDL_GetTicks(), delta = 0;
+    Uint32 start = SDL_GetTicks();
 
     // if screen changed, initialize new screen and quit current
     if (sid != new_sid) {
@@ -40,13 +40,14 @@ void Game::loop() {
       sid = new_sid;
       screens[sid].init();
     }
-
-    // event processing
+ 
+    // event querying
     SDL_Event event;
     while (SDL_PollEvent(&event))
       events.push_back(event);
 
-    new_sid = screens[sid].update(events);
+    // state update
+    new_sid = screens[sid].update(events, 1e-3 * delta);
 
     // rendering
     screens[sid].draw();
@@ -54,8 +55,10 @@ void Game::loop() {
 
     // fps control
     delta = SDL_GetTicks() - start;
-    if (delta < tpf)
+    if (delta < tpf) {
       SDL_Delay(tpf - delta);
+      delta = tpf;
+    }
   }
 }
 

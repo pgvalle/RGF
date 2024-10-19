@@ -6,7 +6,7 @@
 #define MAX_SCREENS 8
 #endif
 
-// return Screen::update return this to quit the game
+// Make Screen::update return this to quit the game
 #define NULL_SCREEN -1
 
 /**
@@ -16,9 +16,14 @@
  */
 struct Screen {
   std::function<void()> init, quit, draw;
-  // Process events and returns the id of the screen the game should go to.
-  std::function<int(const std::vector<SDL_Event> &)> update;
+  // Processes events and returns the id of the screen the game should go to.
+  std::function<int(const std::vector<SDL_Event> &, float)> update;
 };
+
+// FPS
+#ifndef FRAMERATE
+#define FRAMERATE 30
+#endif
 
 class Game {
 private:

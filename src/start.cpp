@@ -1,6 +1,6 @@
 #include "game.h"
 
-int x = 0, y = 0; // example screen rect pos
+float x = 0, y = 0, v = 100; // example screen stuff
 
 int start(int argc, char **argv) {
   Game::instance.init("Hallo", 500, 500);
@@ -13,26 +13,27 @@ int start(int argc, char **argv) {
         SDL_SetRenderDrawColor(Game::instance.renderer, 0, 0, 0, 255);
         SDL_RenderClear(Game::instance.renderer);
 
-        SDL_Rect rect = {x, y, 40, 40};
+        SDL_FRect rect = { x, y, 10, 10 };
         SDL_SetRenderDrawColor(Game::instance.renderer, 255, 0, 0, 255);
-        SDL_RenderFillRect(Game::instance.renderer, &rect);
+        SDL_RenderFillRectF(Game::instance.renderer, &rect);
       },
-      [](const std::vector<SDL_Event> &events) { // update
+      [](auto events, float dt) { // update
         for (const auto &event : events) {
           if (event.type == SDL_QUIT)
             return NULL_SCREEN;
-        }  
+        }
 
         const Uint8 *keys = SDL_GetKeyboardState(NULL);
+        float d = v * dt;
 
         if (keys[SDL_SCANCODE_A])
-          x -= 2;
+          x -= d;
         if (keys[SDL_SCANCODE_D])
-          x += 2;
+          x += d;
         if (keys[SDL_SCANCODE_W])
-          y -= 2;
+          y -= d;
         if (keys[SDL_SCANCODE_S])
-          y += 2;
+          y += d;
 
         return 0;
       }}, 0);
