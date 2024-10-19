@@ -9,11 +9,9 @@
 // Make Screen::update return this to quit the game
 #define NULL_SCREEN -1
 
-/**
- * A Screen is defined by a positive integer (id) and 5 functions.
- * It would be good to define the screen id just like the NULL_SCREEN constant.
- * init and quit are called when the active screen changes.
- */
+// A Screen is defined by a positive integer (id) and 4 functions.
+// It would be good to define the screen id just like the NULL_SCREEN constant.
+// init and quit are called when the active screen changes.
 struct Screen {
   std::function<void()> init, quit, draw;
   // Processes events and returns the id of the screen the game should go to.
@@ -25,14 +23,14 @@ struct Screen {
 #define FRAMERATE 30
 #endif
 
-class Game {
+class App {
 private:
   std::array<Screen, MAX_SCREENS> screens;
 
-  Game() {} // You Can't instantiate a Game object.
+  App() {} // You Can't instantiate a App object.
 
 public:
-  static Game instance; // Global instance of Game
+  static App instance; // Global instance of Game
   SDL_Window *window;
   SDL_Renderer *renderer;
 
@@ -40,11 +38,9 @@ public:
   void quit();
   void loop();
 
-  /**
-   * sid must be greater than -1 and less than MAX_SCREENS.
-   * The screen with id=0 is the starting one.
-   * Calling it twice with same sid will give you an assertion error.
-   */
+  // sid must be greater than -1 and less than MAX_SCREENS.
+  // The screen with id=0 is the starting one.
+  // Calling it twice with same sid will give you an assertion error.
   void define_screen(Screen &&screen, int sid);
 
   void *get_globals();

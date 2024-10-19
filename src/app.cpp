@@ -1,6 +1,7 @@
-#include "game.h"
+#include "app.h"
+#include "resman.h"
 
-void Game::init(const char *title, int w, int h) {
+void App::init(const char *title, int w, int h) {
   window = SDL_CreateWindow(
       title,
       SDL_WINDOWPOS_CENTERED,
@@ -16,23 +17,27 @@ void Game::init(const char *title, int w, int h) {
   screens.fill({ NULL, NULL, NULL, NULL }); // zero-initialize all screens
 }
 
-void Game::quit() {
+void App::quit() {
+  ResMan::instance.free_everything();
   SDL_DestroyRenderer(renderer);
   SDL_DestroyWindow(window);
 }
 
-void Game::loop() {
+void App::loop() {
   Uint32 tpf = 1000 / FRAMERATE, delta = 1; // time per frame and time of frame
   int sid = 0, new_sid = 0; // screen index and new screen index
 
+  screens[sid].init();
+
   while (new_sid != NULL_SCREEN) {
     std::vector<SDL_Event> events;
+    SDL_Event event;
     Uint32 start = SDL_GetTicks();
 
     // if screen changed, initialize new screen and quit current
     if (sid != new_sid) {
       SDL_assert(new_sid >= 0 && new_sid < MAX_SCREENS); // sid within range
-      // all functions of the new screen must be valid
+      // the new screen must be a valid one
       SDL_assert(screens[new_sid].init && screens[new_sid].quit &&
           screens[new_sid].draw && screens[new_sid].update);
 
@@ -42,7 +47,6 @@ void Game::loop() {
     }
  
     // event querying
-    SDL_Event event;
     while (SDL_PollEvent(&event))
       events.push_back(event);
 
@@ -60,9 +64,11 @@ void Game::loop() {
       delta = tpf;
     }
   }
+
+  screens[sid].quit();
 }
 
-void Game::define_screen(Screen &&screen, int sid) {
+void App::define_screen(Screen &&screen, int sid) {
   SDL_assert(sid >= 0 && sid < MAX_SCREENS); // sid within range
   // don't override already defined screens
   SDL_assert(!screens[sid].init && !screens[sid].quit &&
@@ -71,13 +77,13 @@ void Game::define_screen(Screen &&screen, int sid) {
   screens[sid] = screen;
 }
 
-void *Game::get_globals() {
+void *App::get_globals() {
   return SDL_GetWindowData(window, "globals");
 }
 
-void Game::set_globals(void *globals) {
+void App::set_globals(void *globals) {
   SDL_SetWindowData(window, "globals", globals);
 }
 
-Game Game::instance;
+App App::instance;
 

@@ -1,23 +1,25 @@
-#include "game.h"
+#include "app.h"
 
-float x = 0, y = 0, v = 100; // example screen stuff
+float x = 0, y = 0, v = 100; // demo screen context
 
 int start(int argc, char **argv) {
-  Game::instance.init("Hallo", 500, 500);
+  App::instance.init("Hallo", 500, 500);
 
-  // example screen here
-  Game::instance.define_screen({
-      []() {}, // init
-      []() {}, // quit
-      []() {   // draw
-        SDL_SetRenderDrawColor(Game::instance.renderer, 0, 0, 0, 255);
-        SDL_RenderClear(Game::instance.renderer);
+  // demo screen
+  App::instance.define_screen({
+      []() { printf("Demo init\n"); }, // init
+      []() { printf("Demo quit\n"); }, // quit
+      // draw
+      []() {
+        SDL_SetRenderDrawColor(App::instance.renderer, 0, 0, 0, 255);
+        SDL_RenderClear(App::instance.renderer);
 
         SDL_FRect rect = { x, y, 10, 10 };
-        SDL_SetRenderDrawColor(Game::instance.renderer, 255, 0, 0, 255);
-        SDL_RenderFillRectF(Game::instance.renderer, &rect);
+        SDL_SetRenderDrawColor(App::instance.renderer, 255, 0, 0, 255);
+        SDL_RenderFillRectF(App::instance.renderer, &rect);
       },
-      [](auto events, float dt) { // update
+      // update
+      [](auto events, float dt) {
         for (const auto &event : events) {
           if (event.type == SDL_QUIT)
             return NULL_SCREEN;
@@ -38,8 +40,8 @@ int start(int argc, char **argv) {
         return 0;
       }}, 0);
 
-  Game::instance.loop();
-  Game::instance.quit();
+  App::instance.loop();
+  App::instance.quit();
   
   return 0;
 }
