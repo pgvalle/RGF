@@ -1,0 +1,1 @@
+/usr/sbin/c++ CMakeFiles/rgf.dir/src/game.cpp.o CMakeFiles/rgf.dir/src/hook.cpp.o CMakeFiles/rgf.dir/src/start.cpp.o -o rgf  -lSDL2 -lSDL2_ttf -lSDL2 -lSDL2_image -lSDL2 -lSDL2_ttf -lSDL2_image
