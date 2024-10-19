@@ -1,4 +1,5 @@
 #include "app.h"
+#include "resman.h"
 
 float x = 0, y = 0, v = 100; // demo screen context
 
