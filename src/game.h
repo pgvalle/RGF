@@ -17,7 +17,7 @@
 struct Screen {
   std::function<void()> init, quit, draw;
   // Process events and returns the id of the screen the game should go to.
-  std::function<int(const SDL_Event &)> update;
+  std::function<int(const std::vector<SDL_Event> &)> update;
 };
 
 class Game {

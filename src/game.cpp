@@ -26,7 +26,7 @@ void Game::loop() {
   int sid = 0, new_sid = 0; // screen index and new screen index
 
   while (new_sid != NULL_SCREEN) {
-    SDL_Event event;
+    std::vector<SDL_Event> events;
     Uint32 start = SDL_GetTicks(), delta = 0;
 
     // if screen changed, initialize new screen and quit current
@@ -42,8 +42,11 @@ void Game::loop() {
     }
 
     // event processing
-    SDL_PollEvent(&event);
-    new_sid = screens[sid].update(event);
+    SDL_Event event;
+    while (SDL_PollEvent(&event))
+      events.push_back(event);
+
+    new_sid = screens[sid].update(events);
 
     // rendering
     screens[sid].draw();

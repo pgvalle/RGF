@@ -17,19 +17,21 @@ int start(int argc, char **argv) {
         SDL_SetRenderDrawColor(Game::instance.renderer, 255, 0, 0, 255);
         SDL_RenderFillRect(Game::instance.renderer, &rect);
       },
-      [](const SDL_Event &event) { // update
-        if (event.type == SDL_QUIT)
-          return NULL_SCREEN;
+      [](const std::vector<SDL_Event> &events) { // update
+        for (const auto &event : events) {
+          if (event.type == SDL_QUIT)
+            return NULL_SCREEN;
+        }  
 
         const Uint8 *keys = SDL_GetKeyboardState(NULL);
 
-        if (keys[SDLK_a])
+        if (keys[SDL_SCANCODE_A])
           x -= 2;
-        if (keys[SDLK_d])
+        if (keys[SDL_SCANCODE_D])
           x += 2;
-        if (keys[SDLK_w])
+        if (keys[SDL_SCANCODE_W])
           y -= 2;
-        if (keys[SDLK_s])
+        if (keys[SDL_SCANCODE_S])
           y += 2;
 
         return 0;
