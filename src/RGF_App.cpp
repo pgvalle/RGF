@@ -34,7 +34,7 @@ void App::loop() {
   screens[sid].init();
 
   while (new_sid != RGF_NULL_SCREEN) {
-    std::vector<SDL_Event> events;
+    EventList events;
     SDL_Event event;
     Uint32 start = SDL_GetTicks();
 
