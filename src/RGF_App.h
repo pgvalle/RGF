@@ -35,7 +35,7 @@ namespace RGF {
       void quit();
       void loop();
 
-      // sid must be greater than -1 and less than MAX_SCREENS.
+      // sid must be greater than -1 and less than RGF_MAX_SCREENS (see RGL_config.h).
       // The screen with id=0 is the starting one.
       // Calling it twice with same sid will give you an assertion error.
       void define_screen(Screen &&screen, int sid);
