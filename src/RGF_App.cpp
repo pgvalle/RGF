@@ -1,5 +1,7 @@
-#include "app.h"
-#include "resman.h"
+#include "RGF_App.h"
+#include "RGF_ResMan.h"
+
+using namespace RGF;
 
 void App::init(const char *title, int w, int h) {
   window = SDL_CreateWindow(
@@ -24,19 +26,19 @@ void App::quit() {
 }
 
 void App::loop() {
-  Uint32 tpf = 1000 / FRAMERATE, delta = 1; // time per frame and time of frame
+  Uint32 tpf = 1000 / RGF_FRAMERATE, delta = 1; // time per frame and time of frame
   int sid = 0, new_sid = 0; // screen index and new screen index
 
   screens[sid].init();
 
-  while (new_sid != NULL_SCREEN) {
+  while (new_sid != RGF_NULL_SCREEN) {
     std::vector<SDL_Event> events;
     SDL_Event event;
     Uint32 start = SDL_GetTicks();
 
     // if screen changed, initialize new screen and quit current
     if (sid != new_sid) {
-      SDL_assert(new_sid >= 0 && new_sid < MAX_SCREENS); // sid within range
+      SDL_assert(new_sid >= 0 && new_sid < RGF_MAX_SCREENS); // sid within range
       // the new screen must be a valid one
       SDL_assert(screens[new_sid].init && screens[new_sid].quit &&
           screens[new_sid].draw && screens[new_sid].update);
@@ -69,7 +71,7 @@ void App::loop() {
 }
 
 void App::define_screen(Screen &&screen, int sid) {
-  SDL_assert(sid >= 0 && sid < MAX_SCREENS); // sid within range
+  SDL_assert(sid >= 0 && sid < RGF_MAX_SCREENS); // sid within range
   // don't override already defined screens
   SDL_assert(!screens[sid].init && !screens[sid].quit &&
       !screens[sid].draw && !screens[sid].update);

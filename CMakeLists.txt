@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.22)
 
-project(RGF LANGUAGES CXX)
-set(GAME_NAME rgf)
+project(RGL LANGUAGES CXX)
 
 find_package(PkgConfig REQUIRED)
 
@@ -11,13 +10,26 @@ pkg_check_modules(SDL2_IMAGE REQUIRED SDL2_image)
 #pkg_check_modules(SDL2_MIXER REQUIRED SDL2_mixer)
 # ${SDL2_MIXER_INCLUDE_DIRS} ${SDL2_MIXER_LIBRARY_DIRS} ${SDL2_MIXER_LIBRARIES}
 
-include_directories(src/ ext/ ${SDL2_INCLUDE_DIRS} ${SDL2_TTF_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS})
-link_directories(${SDL2_LIBRARY_DIRS} ${SDL2_TTF_LIBRARY_DIRS} ${SDL2_IMAGE_LIBRARY_DIRS})
+include_directories(
+  src/
+  ext/
+  ${SDL2_INCLUDE_DIRS}
+  ${SDL2_TTF_INCLUDE_DIRS}
+  ${SDL2_IMAGE_INCLUDE_DIRS})
 
-# Your executable
+link_directories(
+  ${SDL2_LIBRARY_DIRS}
+  ${SDL2_TTF_LIBRARY_DIRS}
+  ${SDL2_IMAGE_LIBRARY_DIRS})
+
+# Your target
+set(EXEC rgf)
 file(GLOB_RECURSE SRC_FILES src/**.cpp)
-add_executable(${GAME_NAME} ${SRC_FILES} ext/SDL_FontCache.cpp)
 
-target_precompile_headers(${GAME_NAME} PUBLIC src/common.h
-)
-target_link_libraries(${GAME_NAME} ${SDL2_LIBRARIES} ${SDL2_TTF_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})
+add_executable(${EXEC} ${SRC_FILES} ext/SDL_FontCache.cpp)
+
+target_link_libraries(${EXEC} PRIVATE
+  ${SDL2_LIBRARIES}
+  ${SDL2_TTF_LIBRARIES}
+  ${SDL2_IMAGE_LIBRARIES})
+

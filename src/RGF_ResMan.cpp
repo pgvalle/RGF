@@ -1,5 +1,8 @@
-#include "resman.h"
-#include "app.h"
+#include "RGF_ResMan.h"
+#include "RGF_App.h"
+#include <SDL_image.h>
+
+using namespace RGF;
 
 void ResMan::free_everything() {
   for (auto& [_, texture] : textures)

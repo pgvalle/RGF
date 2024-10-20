@@ -1,10 +1,12 @@
-#include "app.h"
-#include "resman.h"
+#include "RGF_App.h"
+#include "RGF_ResMan.h"
+
+using namespace RGF;
 
 float x = 0, y = 0, v = 100; // demo screen context
 
-int start(int argc, char **argv) {
-  App::instance.init("Hallo", 500, 500);
+int RGF_main(int argc, char **argv) {
+  App::instance.init("Demo", 500, 500);
 
   // demo screen
   App::instance.define_screen({
@@ -23,7 +25,7 @@ int start(int argc, char **argv) {
       [](auto events, float dt) {
         for (const auto &event : events) {
           if (event.type == SDL_QUIT)
-            return NULL_SCREEN;
+            return RGF_NULL_SCREEN;
         }
 
         const Uint8 *keys = SDL_GetKeyboardState(NULL);

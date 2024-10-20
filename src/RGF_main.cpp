@@ -1,6 +1,9 @@
-#include "app.h"
+#include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_ttf.h>
+#include <ctime>
 
-int start(int argc, char **argv);
+int RGF_main(int argc, char **argv);
 
 int main(int argc, char **argv) {
   int ret;
@@ -12,7 +15,7 @@ int main(int argc, char **argv) {
   SDL_assert(IMG_Init(IMG_INIT_PNG) == IMG_INIT_PNG);
   SDL_assert(TTF_Init() == 0);
 
-  ret = start(argc, argv);
+  ret = RGF_main(argc, argv);
 
   TTF_Quit();
   IMG_Quit();
