@@ -17,6 +17,8 @@ void App::init(const char *title, int w, int h) {
   SDL_assert(renderer);
 
   screens.fill({ NULL, NULL, NULL, NULL }); // zero-initialize all screens
+
+  SDL_RenderSetLogicalSize(renderer, w, h);
 }
 
 void App::quit() {
