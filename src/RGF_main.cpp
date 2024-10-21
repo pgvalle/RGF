@@ -8,6 +8,9 @@ int RGF_main(int argc, char **argv);
 int main(int argc, char **argv) {
   int ret;
 
+	printf("MAX_SCREENS: %d\n", RGF_MAX_SCREENS);
+	printf("FRAMERATE: %d\n", RGF_FRAMERATE);
+
   srand(time(NULL));
 
   // make sure all libraries are initialized

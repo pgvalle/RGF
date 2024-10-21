@@ -4,7 +4,6 @@
 #include <array>
 #include <vector>
 #include <functional>
-#include "RGF_config.h"
 
 // Make Screen::update return this to quit the game
 #define RGF_NULL_SCREEN -1
@@ -42,9 +41,6 @@ namespace RGF {
       // The screen with id=0 is the starting one.
       // Calling it twice with same sid will give you an assertion error.
       void define_screen(Screen &&screen, int sid);
-
-      void *get_globals();
-      void set_globals(void *globals); 
   };
 
 }

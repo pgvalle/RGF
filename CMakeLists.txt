@@ -22,6 +22,8 @@ link_directories(
   ${SDL2_TTF_LIBRARY_DIRS}
   ${SDL2_IMAGE_LIBRARY_DIRS})
 
+add_compile_definitions(RGF_FRAMERATE=30 RGF_MAX_SCREENS=8)
+
 # Your target
 set(EXEC rgf)
 file(GLOB_RECURSE SRC_FILES src/**.cpp)

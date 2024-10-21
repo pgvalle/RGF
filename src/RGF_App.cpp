@@ -81,13 +81,5 @@ void App::define_screen(Screen &&screen, int sid) {
   screens[sid] = screen;
 }
 
-void *App::get_globals() {
-  return SDL_GetWindowData(window, "globals");
-}
-
-void App::set_globals(void *globals) {
-  SDL_SetWindowData(window, "globals", globals);
-}
-
 App App::instance;
 
