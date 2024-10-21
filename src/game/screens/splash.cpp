@@ -42,6 +42,44 @@ void splash_draw() {
   if (i <= text.find('*'))
     return;
 
+  SDL_Rect src, dst;
+
+  src = { 0, 0, 24, 8 };
+  dst = { 59, 136, 24, 8 };
+  SDL_RenderCopy(
+      App::instance.renderer,
+      ResMan::instance.get_texture(UFO_ASSET),
+      &src,
+      &dst);
+
+  src = { 0, 0, 8, 8 };
+  dst = { 67, 152, 8, 8 };
+  SDL_RenderCopy(
+      App::instance.renderer,
+      ResMan::instance.get_texture(INVADER1_ASSET),
+      &src,
+      &dst);
+
+  src = { 0, 0, 11, 8 };
+  dst = { 66, 168, 11, 8 };
+  SDL_RenderCopy(
+      App::instance.renderer,
+      ResMan::instance.get_texture(INVADER2_ASSET),
+      &src,
+      &dst);
+
+
+  src = { 0, 0, 12, 8 };
+  dst = { 65, 184, 12, 8 };
+  SDL_RenderCopy(
+      App::instance.renderer,
+      ResMan::instance.get_texture(INVADER3_ASSET),
+      &src,
+      &dst);
+  //SDL_RenderCopy(App::instance.renderer, ResMan::instance.get_texture());
+  //SDL_RenderCopy(App::instance.renderer, ResMan::instance.get_texture());
+  //SDL_RenderCopy(App::instance.renderer, ResMan::instance.get_texture());
+
   //sic.draw_clip({ 0, 0, 16, 8 }, { 64, 136, 16, 8 });
   //sic.draw_clip({ 0, 16, 8, 8 }, { 68, 152, 8, 8 });
   //sic.draw_clip({ 0, 24, 11, 8 }, { 66, 168, 11, 8 });

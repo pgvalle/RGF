@@ -17,7 +17,7 @@ namespace RGF {
       static ResMan instance;
 
       // Doesn't need to be called when quitting the game. Called automatically.
-      void free_everything();
+      void free_resources();
 
       SDL_Texture *load_texture(int id, const char *path);
       SDL_Texture *get_texture(int id);

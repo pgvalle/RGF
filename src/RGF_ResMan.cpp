@@ -4,7 +4,7 @@
 
 using namespace RGF;
 
-void ResMan::free_everything() {
+void ResMan::free_resources() {
   for (auto& [_, texture] : textures)
     SDL_DestroyTexture(texture);
   textures.clear();
