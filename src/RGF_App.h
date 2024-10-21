@@ -5,9 +5,6 @@
 #include <vector>
 #include <functional>
 
-// Make Screen::update return this to quit the game
-#define RGF_NULL_SCREEN -1
-
 namespace RGF {
 
   // Good alias so that you don't need to type too much
@@ -32,6 +29,7 @@ namespace RGF {
       static App instance; // Global instance of RGL_App
       SDL_Window *window;
       SDL_Renderer *renderer;
+      bool should_quit; // quit the game inside a screen using this variable
 
       void init(const char *title, int w, int h);
       void quit();

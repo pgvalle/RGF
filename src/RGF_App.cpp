@@ -16,6 +16,8 @@ void App::init(const char *title, int w, int h) {
   renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
   SDL_assert(renderer);
 
+  should_quit = false;
+
   screens.fill({ NULL, NULL, NULL, NULL }); // zero-initialize all screens
 
   SDL_RenderSetLogicalSize(renderer, w, h);
@@ -33,7 +35,7 @@ void App::loop() {
 
   screens[sid].init();
 
-  while (new_sid != RGF_NULL_SCREEN) {
+  while (should_quit) {
     EventList events;
     SDL_Event event;
     Uint32 start = SDL_GetTicks();
