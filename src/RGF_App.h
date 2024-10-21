@@ -7,16 +7,15 @@
 
 namespace RGF {
 
-  // Good alias so that you don't need to type too much
-  using EventList = std::vector<SDL_Event>;
-
-  // A Screen is defined by a positive integer (id) and 4 functions.
+  // A Screen is defined by a positive integer (id) and 5 functions.
   // It would be good to define the screen id just like the NULL_SCREEN constant.
   // init and quit are called when the active screen changes.
   struct Screen {
     std::function<void()> init, quit, draw;
-    // Processes events and returns the id of the screen the game should go to.
-    std::function<int(const EventList &, float)> update;
+    // Returns the id of the screen the game should go to.
+    // Receives as argument the time passed since last call.
+    std::function<int(float)> update;
+    std::function<void(const SDL_Event &)> handle_event;
   };
 
   class App {

@@ -11,12 +11,21 @@ extern struct SICGlobals {
 
 // DEFINING SCREENS
 
-#define SPLASH_SCREEN 0
+#define SPLASH_SCREEN 1
 
 void splash_init();
 void splash_quit();
 void splash_draw();
-int splash_update(const RGF::EventList &events, float dt);
+int splash_update(float dt);
+void splash_handle_event(const SDL_Event &event);
+
+#define PLAY_SCREEN 0
+
+void play_init();
+void play_quit();
+void play_draw();
+int play_update(float dt);
+void play_handle_event(const SDL_Event &event);
 
 // ASSETS
 

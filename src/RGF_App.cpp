@@ -20,17 +20,18 @@ void App::init(const char *title, int w, int h) {
 
   screens.fill({ NULL, NULL, NULL, NULL }); // zero-initialize all screens
 
-  SDL_RenderSetLogicalSize(renderer, w, h);
+  SDL_RenderSetLogicalSize(renderer, w, h); // resolution independent rendering
+  SDL_RenderSetIntegerScale(renderer, SDL_TRUE); // nice scaling
 }
 
 void App::quit() {
+  if (!should_quit) 
+    return;
+
   ResMan::instance.free_resources();
 
-  if (renderer)
-    SDL_DestroyRenderer(renderer);
-
-  if (window)
-    SDL_DestroyWindow(window);
+  SDL_DestroyRenderer(renderer);
+  SDL_DestroyWindow(window);
 }
 
 void App::loop() {
@@ -39,29 +40,28 @@ void App::loop() {
 
   screens[sid].init();
 
-  while (should_quit) {
-    EventList events;
+  while (!should_quit) {
     SDL_Event event;
     Uint32 start = SDL_GetTicks();
 
     // if screen changed, initialize new screen and quit current
     if (sid != new_sid) {
-      SDL_assert(new_sid >= 0 && new_sid < RGF_MAX_SCREENS); // sid within range
       // the new screen must be a valid one
-      SDL_assert(screens[new_sid].init && screens[new_sid].quit &&
-          screens[new_sid].draw && screens[new_sid].update);
+      SDL_assert(new_sid >= 0 && new_sid < RGF_MAX_SCREENS);
+      SDL_assert(screens[new_sid].handle_event && screens[new_sid].update &&
+          screens[new_sid].draw && screens[new_sid].quit && screens[new_sid].init);
 
       screens[sid].quit();
       sid = new_sid;
       screens[sid].init();
     }
  
-    // event querying
+    // event processing
     while (SDL_PollEvent(&event))
-      events.push_back(event);
+      screens[sid].handle_event(event);
 
     // state update
-    new_sid = screens[sid].update(events, 1e-3 * delta);
+    new_sid = screens[sid].update(1e-3 * delta);
 
     // rendering
     screens[sid].draw();
@@ -81,8 +81,8 @@ void App::loop() {
 void App::define_screen(Screen &&screen, int sid) {
   SDL_assert(sid >= 0 && sid < RGF_MAX_SCREENS); // sid within range
   // don't override already defined screens
-  SDL_assert(!screens[sid].init && !screens[sid].quit &&
-      !screens[sid].draw && !screens[sid].update);
+  SDL_assert(!screens[sid].handle_event && !screens[sid].update &&
+      !screens[sid].draw && !screens[sid].quit && !screens[sid].init);
 
   screens[sid] = screen;
 }

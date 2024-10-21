@@ -25,10 +25,11 @@ int RGF_main(int argc, char **argv) {
   //    splash_update }, SPLASH_SCREEN);
 
   App::instance.define_screen({
-			[]() {},
-			[]() {},
-			[]() {},
-			[](auto events, float dt) { return 0; } }, 0);
+    play_init,
+    play_quit,
+    play_draw,
+    play_update,
+    play_handle_event }, PLAY_SCREEN);
 
   App::instance.loop();
   App::instance.quit();
