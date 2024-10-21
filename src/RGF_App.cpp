@@ -24,9 +24,13 @@ void App::init(const char *title, int w, int h) {
 }
 
 void App::quit() {
-  ResMan::instance.free_everything();
-  SDL_DestroyRenderer(renderer);
-  SDL_DestroyWindow(window);
+  ResMan::instance.free_resources();
+
+  if (renderer)
+    SDL_DestroyRenderer(renderer);
+
+  if (window)
+    SDL_DestroyWindow(window);
 }
 
 void App::loop() {
