@@ -1,9 +1,11 @@
 #include "SIC.h"
 
 using namespace RGF;
+
 SICGlobals sic = {
   0, 0, 0
 };
+
 int RGF_main(int argc, char **argv) {
   App::instance.init("Demo", WIDTH, HEIGHT);
 
@@ -16,11 +18,17 @@ int RGF_main(int argc, char **argv) {
   ResMan::instance.load_texture(INVADER_DEATH_ASSET, "res/img/invaderdeath.png");
   ResMan::instance.load_texture(UFO_ASSET, "res/img/ufo.png");
 
+  //App::instance.define_screen({
+  //    splash_init,
+  //    splash_quit,
+  //    splash_draw,
+  //    splash_update }, SPLASH_SCREEN);
+
   App::instance.define_screen({
-      splash_init,
-      splash_quit,
-      splash_draw,
-      splash_update }, SPLASH_SCREEN);
+			[]() {},
+			[]() {},
+			[]() {},
+			[](auto events, float dt) { return 0; } }, 0);
 
   App::instance.loop();
   App::instance.quit();

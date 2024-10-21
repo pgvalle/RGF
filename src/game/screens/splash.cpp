@@ -60,7 +60,7 @@ void update_text_display() {
   while (i < text.length() && (text[i] == ' ' || text[i] == '\n'));
 }
 
-int splash_update(const EventList &events, float _) {
+int splash_update(const EventList &events, float dt) {
   //ui_update(event);
 
   for (const auto& event : events) {
@@ -68,7 +68,7 @@ int splash_update(const EventList &events, float _) {
       SDL_Keycode key = event.key.keysym.sym;
 
       if (key == SDLK_q)
-        return RGF_NULL_SCREEN;
+        App::instance.should_quit = true;
       
       if (key == SDLK_SPACE) {
         state = 4;
