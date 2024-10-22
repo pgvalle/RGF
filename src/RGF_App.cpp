@@ -38,7 +38,7 @@ void App::loop() {
   Uint32 tpf = 1000 / RGF_FRAMERATE, delta = 1; // time per frame and time of frame
   int sid = 0, new_sid = 0; // screen index and new screen index
 
-  screens[sid].init();
+  screens[sid].init(-1);
 
   while (!should_quit) {
     SDL_Event event;
@@ -52,8 +52,8 @@ void App::loop() {
           screens[new_sid].draw && screens[new_sid].quit && screens[new_sid].init);
 
       screens[sid].quit();
+      screens[new_sid].init(sid);
       sid = new_sid;
-      screens[sid].init();
     }
  
     // event processing

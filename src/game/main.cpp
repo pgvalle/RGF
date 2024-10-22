@@ -10,7 +10,6 @@ int RGF_main(int argc, char **argv) {
   App::instance.init("Demo", WIDTH, HEIGHT);
 
   ResMan::instance.load_font(FONT_ASSET, 8, TTF_STYLE_NORMAL, "res/font.ttf");
-
   ResMan::instance.load_texture(CANNON_ASSET, "res/img/cannon.png");
   ResMan::instance.load_texture(INVADER1_ASSET, "res/img/invader1.png");
   ResMan::instance.load_texture(INVADER2_ASSET, "res/img/invader2.png");

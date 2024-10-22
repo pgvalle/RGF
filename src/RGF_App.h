@@ -11,7 +11,8 @@ namespace RGF {
   // It would be good to define the screen id just like the NULL_SCREEN constant.
   // init and quit are called when the active screen changes.
   struct Screen {
-    std::function<void()> init, quit, draw;
+    std::function<void(int)> init;
+    std::function<void()> quit, draw;
     // Returns the id of the screen the game should go to.
     // Receives as argument the time passed since last call.
     std::function<int(float)> update;
