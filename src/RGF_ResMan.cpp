@@ -15,7 +15,7 @@ void ResMan::free_resources() {
 }
 
 SDL_Texture *ResMan::load_texture(int id, const char *path) {
-  SDL_assert(App::istance.renderer); // renderer must exist
+  SDL_assert(App::instance.renderer); // renderer must exist
   SDL_assert(textures.find(id) == textures.end()); // texture must not exist yet
 
   textures[id] = IMG_LoadTexture(App::instance.renderer, path);
