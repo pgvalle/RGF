@@ -1,10 +1,11 @@
-#include "UFO.h"
+#include "ufo.h"
+#include "../SIC.h"
 
 #define UFO_Y 40
-#define UFO_LL 8
-#define UFO_RL 192
+#define UFO_LL 8   // left limit
+#define UFO_RL 192 // right limit
 
-#define UFO_VX 20
+#define UFO_VX 25
 
 #define UFO_TSS 2 // Time Showing Score
 #define UFO_TOE 2 // Time Of Explosion
@@ -37,6 +38,9 @@ void UFO::draw() const {
     case UFO_ALIVE:
       draw_clip(UFO_ASSET, x, UFO_Y, {0, 0, 24, 8});
       break;
+    case UFO_EXPLODING:
+      draw_clip(UFO_ASSET, x, UFO_Y, {24, 0, 24, 8});
+      break;
     case UFO_SHOWING_SCORE:
       draw_text(FONT_ASSET, x, UFO_Y, "%d", score);
       break;
@@ -55,7 +59,7 @@ void UFO::update(float dt) {
       time = 0;
       break;
     case UFO_ALIVE:
-      x += dt * UFO_VX;
+      x += dt * vx;
       if (UFO_LL <= x && x <= UFO_RL)
         break;
       state = UFO_AWAY;

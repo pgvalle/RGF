@@ -1,7 +1,5 @@
 #pragma once
 
-#include "../../SIC.h"
-
 enum UFOState {
   UFO_AWAY,
   UFO_ALIVE,
