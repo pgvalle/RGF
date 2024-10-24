@@ -66,8 +66,8 @@ void Horde::Invader::move(int dx, int dy) {
 ///////////////////////////////////////////////////////////
 
 void Horde::draw() const {
-  for (const auto &invader : invaders)
-    invader.draw();
+  for (const auto &inv : invaders)
+    inv.draw();
 }
 
 void Horde::move() {
@@ -85,8 +85,8 @@ void Horde::move() {
   }
 
   // check if got to left or right limits and change direction accordingly
-  for (const auto &invader : invaders) {
-    if (invader.x > 220 || invader.x < 10) {
+  for (const auto &inv : invaders) {
+    if (inv.x < 12 || inv.x > 200) {
       dx = -dx;
       dy = 8;
       break;

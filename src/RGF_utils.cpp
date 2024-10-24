@@ -1,6 +1,7 @@
 #include "RGF_utils.h"
 #include "RGF_App.h"
 #include "RGF_ResMan.h"
+#include <cstdio>
 #include <cstdarg>
 
 void RGF::draw_text(int font_id, float x, float y, const char *fmt, ...) {

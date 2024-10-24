@@ -18,7 +18,7 @@ void play_init() {
   if (!p)
     p = new Play;
   else
-    p->state = p->state + 30; // restore exact same state before pausing
+    p->state = p->state + RGF_MAX_SCREENS; // restore exact same state before pausing
 }
 
 void play_quit() {
@@ -73,7 +73,7 @@ void play_handle_event(const SDL_Event &event) {
   switch (event.type) {
     case SDL_KEYDOWN:
       if (!event.key.repeat && event.key.keysym.sym == SDLK_p)
-        p->state = p->state - 30; // so that we know what state we were before pausing
+        p->state = p->state - RGF_MAX_SCREENS; // so that we know what state we were
       break;
     case SDL_QUIT:
       App::instance.should_quit = true;
