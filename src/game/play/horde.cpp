@@ -65,12 +65,6 @@ void Horde::Invader::move(int dx, int dy) {
 /// HORDE
 ///////////////////////////////////////////////////////////
 
-Horde::Horde() {
-  i = 0;
-  dx = 2;
-  dy = 0;
-}
-
 void Horde::draw() const {
   for (const auto &invader : invaders)
     invader.draw();

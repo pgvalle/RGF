@@ -1,22 +1,33 @@
 #include "../SIC.h"
 #include "ufo.h"
 #include "horde.h"
-//#include "UI.h"
 
 using namespace RGF;
 
-static int state;
-static float time;
-static UFO ufo;
-static Horde horde;
+struct Play {
+  int state = 0;
+  float time = 0;
+  UFO ufo;
+  Horde horde;
+};
 
-void play_init(int prev_screen) {
-  state = 0;
-  time = 0;
+static Play *p = NULL;
+
+void play_init() {
+  // game being started over again. It was not paused
+  if (!p)
+    p = new Play;
+  else
+    p->state = p->state + 30; // restore exact same state before pausing
 }
 
 void play_quit() {
+  // Game paused. Do not dealocate play screen data.
+  if (p->state < 0)
+    return;
 
+  delete p;
+  p = NULL;
 }
 
 void play_draw() {
@@ -24,31 +35,34 @@ void play_draw() {
   SDL_RenderClear(App::instance.renderer);
 
   //ui_draw();
-  ufo.draw();
-  horde.draw();
+  p->ufo.draw();
+  p->horde.draw();
 
   //draw_text(FONT_ASSET, 0, 0, "hallo, bre");
   //draw_clip(INVADER1_ASSET, 200, 200, { 0, 0, 8, 8 });
 }
 
 int play_update(float dt) {
-  switch (state) {
+  if (p->state < 0)
+    return PAUSE_SCREEN;
+
+  switch (p->state) {
     case 0: // populating horde
-      horde.populate();
-      state = (horde.invaders.size() < 55 ? 0 : 1);
+      p->horde.populate();
+      p->state = (p->horde.invaders.size() < 55 ? 0 : 1);
       break;
-    case 1: // wait before showing player and make it controllable
-      ufo.update(dt);
-      horde.move();
-      time += dt;
+    case 1: // wait before showing cannon and make it controllable
+      p->ufo.update(dt);
+      p->horde.move();
+      p->time += dt;
       if (dt >= 1) {
-        state = 2;
-        time = 0;
+        p->state = 2;
+        p->time = 0;
       }
       break;
     case 2: // player playing
-      ufo.update(dt);
-      horde.move();
+      p->ufo.update(dt);
+      p->horde.move();
       break;
   }
 
@@ -56,7 +70,16 @@ int play_update(float dt) {
 }
 
 void play_handle_event(const SDL_Event &event) {
-  //ui_update(event);
-  if (event.type == SDL_QUIT)
-    App::instance.should_quit = true;
+  switch (event.type) {
+    case SDL_KEYDOWN:
+      if (!event.key.repeat && event.key.keysym.sym == SDLK_p)
+        p->state = p->state - 30; // so that we know what state we were before pausing
+      break;
+    case SDL_QUIT:
+      App::instance.should_quit = true;
+      break;
+    default:
+      // ...
+      break;
+  }
 }

@@ -14,10 +14,8 @@ struct Horde {
   };
 
   std::vector<Invader> invaders;
-  int i;
-  int dx, dy;
-
-  Horde();
+  int i = 0;
+  int dx = 2, dy = 0;
 
   void draw() const;
   void move();

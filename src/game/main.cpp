@@ -2,7 +2,7 @@
 
 using namespace RGF;
 
-SICGlobals sic = {
+Globals g = {
   0, 0, 0
 };
 
@@ -29,6 +29,13 @@ int RGF_main(int argc, char **argv) {
     play_draw,
     play_update,
     play_handle_event }, PLAY_SCREEN);
+
+  App::instance.define_screen({
+    pause_init,
+    pause_quit,
+    pause_draw,
+    pause_update,
+    pause_handle_event }, PAUSE_SCREEN);
 
   App::instance.loop();
   App::instance.quit();
