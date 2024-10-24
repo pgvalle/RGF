@@ -14,7 +14,7 @@ namespace RGF {
       ResMan() {} // you can't instantiate a ResMan object.
 
     public:
-      static ResMan instance;
+      static ResMan instance; // Global instance of ResMan
 
       // Doesn't need to be called when quitting the game. Called automatically.
       void free_resources();
