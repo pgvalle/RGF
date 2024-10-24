@@ -3,14 +3,9 @@
 #include <SDL_ttf.h>
 #include <ctime>
 
-int RGF_main(int argc, char **argv);
+void RGF_main(int argc, char **argv);
 
 int main(int argc, char **argv) {
-  int ret;
-
-	printf("MAX_SCREENS: %d\n", RGF_MAX_SCREENS);
-	printf("FRAMERATE: %d\n", RGF_FRAMERATE);
-
   srand(time(NULL));
 
   // make sure all libraries are initialized
@@ -18,11 +13,11 @@ int main(int argc, char **argv) {
   SDL_assert(IMG_Init(IMG_INIT_PNG) == IMG_INIT_PNG);
   SDL_assert(TTF_Init() == 0);
 
-  ret = RGF_main(argc, argv);
+  RGF_main(argc, argv);
 
   TTF_Quit();
   IMG_Quit();
   SDL_Quit();
 
-  return ret;
+  return 0;
 }

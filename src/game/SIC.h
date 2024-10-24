@@ -25,7 +25,7 @@ extern struct Globals {
 
 // All screens
 
-#define SPLASH_SCREEN 1
+#define SPLASH_SCREEN 0
 
 void splash_init();
 void splash_quit();
@@ -33,7 +33,7 @@ void splash_draw();
 int splash_update(float dt);
 void splash_handle_event(const SDL_Event &event);
 
-#define PLAY_SCREEN 0
+#define PLAY_SCREEN 1
 
 void play_init();
 void play_quit();

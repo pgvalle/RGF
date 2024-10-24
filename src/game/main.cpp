@@ -6,8 +6,10 @@ Globals g = {
   0, 0, 0
 };
 
-int RGF_main(int argc, char **argv) {
-  App::instance.init("Demo", WIDTH, HEIGHT);
+void RGF_main(int argc, char **argv) {
+  App::instance.init("Space Invaders", WIDTH, HEIGHT);
+
+  SDL_SetWindowSize(App::instance.window, 2 * WIDTH, 2 * HEIGHT);
 
   ResMan::instance.load_font(FONT_ASSET, 8, TTF_STYLE_NORMAL, "res/font.ttf");
   ResMan::instance.load_texture(CANNON_ASSET, "res/img/cannon.png");
@@ -17,11 +19,12 @@ int RGF_main(int argc, char **argv) {
   ResMan::instance.load_texture(INVADER_DEATH_ASSET, "res/img/invaderdeath.png");
   ResMan::instance.load_texture(UFO_ASSET, "res/img/ufo.png");
 
-  //App::instance.define_screen({
-  //    splash_init,
-  //    splash_quit,
-  //    splash_draw,
-  //    splash_update }, SPLASH_SCREEN);
+  App::instance.define_screen({
+      splash_init,
+      splash_quit,
+      splash_draw,
+      splash_update,
+      splash_handle_event }, SPLASH_SCREEN);
 
   App::instance.define_screen({
     play_init,
@@ -39,6 +42,4 @@ int RGF_main(int argc, char **argv) {
 
   App::instance.loop();
   App::instance.quit();
-  
-  return 0;
 }
