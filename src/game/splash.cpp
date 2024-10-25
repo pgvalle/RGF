@@ -30,6 +30,9 @@ void splash_quit() {
 }
 
 void splash_draw() {
+  SDL_SetRenderDrawColor(App::instance.renderer, 0, 0, 0, 255);
+  SDL_RenderClear(App::instance.renderer);
+
   draw_text(FONT_ASSET, 24, 64, s->text.substr(0, s->i).c_str());
 
   if (s->i <= s->text.find('*'))
@@ -50,6 +53,7 @@ void update_text_display(float dt) {
     return;
 
   s->time = 0;
+
   // skip whitespaces and new lines
   do s->i++;
   while (s->i < s->text.length() && s->text[s->i] <= ' ');
@@ -57,7 +61,7 @@ void update_text_display(float dt) {
 
 int splash_update(float dt) {
   switch (s->state) {
-    case -1:
+    case -1: // go to play screen
       return PLAY_SCREEN;
     case 0: // wait 1.5 seconds before start displaying text
       s->time += dt;
@@ -96,20 +100,12 @@ void splash_handle_event(const SDL_Event &event) {
   switch (event.type) {
     case SDL_KEYDOWN:
       switch (event.key.keysym.sym) {
-        case SDLK_q:
-          App::instance.should_quit = true;
-          break;
-        case SDLK_SPACE:
-          s->state = 4;
-          s->time = 0;
-          s->i = s->text.length();
-          break;
-        case SDLK_s:
-          s->state = -1;
-          break;
-        case SDLK_RETURN:
+        case SDLK_RETURN: // skip text typewriting or go to play state
           s->state = (s->state == 4 ? -1 : 4);
           s->i = s->text.length();
+          break;
+        case SDLK_q: // exit
+          App::instance.should_quit = true;
           break;
       }
       break;

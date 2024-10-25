@@ -35,13 +35,13 @@ void UFO::draw() const {
   SDL_SetRenderDrawColor(App::instance.renderer, 255, 0, 0, 255); // red
 
   switch (state) {
-    case UFO_ALIVE:
+    case ALIVE:
       draw_clip(UFO_ASSET, x, UFO_Y, {0, 0, 24, 8});
       break;
-    case UFO_EXPLODING:
+    case EXPLODING:
       draw_clip(UFO_ASSET, x, UFO_Y, {24, 0, 24, 8});
       break;
-    case UFO_SHOWING_SCORE:
+    case SHOWING_SCORE:
       draw_text(FONT_ASSET, x, UFO_Y, "%d", score);
       break;
   }
@@ -49,35 +49,35 @@ void UFO::draw() const {
 
 void UFO::update(float dt) {
   switch (state) {
-    case UFO_AWAY:
+    case AWAY:
       time += dt;
       if (time < UFO_TTR)
         break;
-      state = UFO_ALIVE;
+      state = ALIVE;
       x = (rand() % 2 ? UFO_LL : UFO_RL); // choose a corner
       vx = (x == UFO_LL ? UFO_VX : -UFO_VX); // set correct velocity
       time = 0;
       break;
-    case UFO_ALIVE:
+    case ALIVE:
       x += dt * vx;
       if (UFO_LL <= x && x <= UFO_RL)
         break;
-      state = UFO_AWAY;
+      state = AWAY;
       time = 0;
       break;
-    case UFO_EXPLODING:
+    case EXPLODING:
       time += dt;
       if (time < UFO_TOE)
         break;
-      state = UFO_SHOWING_SCORE;
+      state = SHOWING_SCORE;
       time = 0;
       //sic->score += 100; // TODO: generate random score
       break;
-    case UFO_SHOWING_SCORE:
+    case SHOWING_SCORE:
       time += dt;
       if (time < UFO_TSS)
         break;
-      state = UFO_AWAY;
+      state = AWAY;
       time = 0;
       break;
   }

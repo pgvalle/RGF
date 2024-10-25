@@ -1,14 +1,17 @@
 #include "../SIC.h"
 #include "ufo.h"
 #include "horde.h"
+#include "cannon.h"
 
 using namespace RGF;
 
 struct Play {
   int state = 0;
   float time = 0;
+  int lives = 3;
   UFO ufo;
   Horde horde;
+  Cannon cannon;
 };
 
 static Play *p = NULL;
@@ -34,17 +37,26 @@ void play_draw() {
   SDL_SetRenderDrawColor(App::instance.renderer, 0, 0, 0, 255);
   SDL_RenderClear(App::instance.renderer);
 
-  //ui_draw();
   p->ufo.draw();
   p->horde.draw();
+  p->cannon.draw();
 
-  //draw_text(FONT_ASSET, 0, 0, "hallo, bre");
-  //draw_clip(INVADER1_ASSET, 200, 200, { 0, 0, 8, 8 });
+  draw_text(FONT_ASSET, 8, 240, "%d", p->lives);
+  for (int i = 0; i < p->lives - 1; i++) {
+    draw_clip(CANNON_ASSET, 24 + 16 * i, 240, { 0, 0, 16, 8 });
+  }
 }
 
 int play_update(float dt) {
   if (p->state < 0)
     return PAUSE_SCREEN;
+
+  const Uint8 *keys = SDL_GetKeyboardState(NULL);
+  int cannon_dx = 0;
+
+  cannon_dx -= keys[SDL_SCANCODE_A];
+  cannon_dx += keys[SDL_SCANCODE_D];
+  p->cannon.vx = 80 * cannon_dx;
 
   switch (p->state) {
     case 0: // populating horde
@@ -52,17 +64,33 @@ int play_update(float dt) {
       p->state = (p->horde.invaders.size() < 55 ? 0 : 1);
       break;
     case 1: // wait before showing cannon and make it controllable
-      p->ufo.update(dt);
       p->horde.move();
-      p->time += dt;
-      if (dt >= 1) {
+      p->cannon.update(dt);
+      if (p->cannon.state == Cannon::ALIVE)
         p->state = 2;
-        p->time = 0;
-      }
       break;
     case 2: // player playing
       p->ufo.update(dt);
       p->horde.move();
+      p->cannon.update(dt);
+
+      // TODO: check collisions with cannon before
+
+      if (p->cannon.state == Cannon::DYING)
+        p->state = 3;
+      break;
+    case 3: // player dying. Not updating anything until it alives again
+      p->cannon.update(dt);
+      if (p->cannon.state == Cannon::DEAD) {
+        if (--p->lives == 0) // sheeesh game over
+          return 0;
+        p->state = 4;
+      }
+      break;
+    case 4: // player dead
+      p->cannon.update(dt);
+      if (p->cannon.state == Cannon::DEAD)
+        p->state = 1;
       break;
   }
 
@@ -72,8 +100,21 @@ int play_update(float dt) {
 void play_handle_event(const SDL_Event &event) {
   switch (event.type) {
     case SDL_KEYDOWN:
-      if (!event.key.repeat && event.key.keysym.sym == SDLK_p)
-        p->state = p->state - RGF_MAX_SCREENS; // so that we know what state we were
+      switch(event.key.keysym.sym) {
+        case SDLK_ESCAPE:
+          p->state = p->state - RGF_MAX_SCREENS; // so that we know what state we were
+          break;
+        case SDLK_q:
+          App::instance.should_quit = true;
+          break;
+        case SDLK_e:
+          if (p->state != 2) // only trigger test in playing state
+            break;
+          p->cannon.state = Cannon::DYING;
+          p->cannon.time1 = 0; // time1 for death time
+          p->cannon.time2 = 0;
+          break;
+      }
       break;
     case SDL_QUIT:
       App::instance.should_quit = true;

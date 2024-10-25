@@ -2,14 +2,14 @@
 
 struct UFO {
   enum UFOState {
-    UFO_AWAY,
-    UFO_ALIVE,
-    UFO_EXPLODING,
-    UFO_SHOWING_SCORE,
-    UFO_DEAD
+    AWAY,
+    ALIVE,
+    EXPLODING,
+    SHOWING_SCORE,
+    DEAD
   };
 
-  UFOState state = UFO_AWAY;
+  UFOState state = AWAY;
   float x = 1e10, vx = 0;
   int score = 0;
   float time = 0;
